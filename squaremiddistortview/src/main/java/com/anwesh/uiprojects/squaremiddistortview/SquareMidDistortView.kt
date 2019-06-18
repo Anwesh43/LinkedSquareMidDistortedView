@@ -208,4 +208,25 @@ class SquareMidDistortedView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : SquareMidDistortedView) {
+
+        private val animator : Animator = Animator(view)
+        private val smd : SquareMidDistort = SquareMidDistort(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            animator.animate {
+                smd.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            smd.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
