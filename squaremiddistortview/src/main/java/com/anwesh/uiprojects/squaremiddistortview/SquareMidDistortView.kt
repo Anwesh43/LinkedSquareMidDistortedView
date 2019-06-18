@@ -16,12 +16,14 @@ val nodes : Int = 5
 val lines : Int = 4
 val scGap : Float = 0.05f
 val scDiv : Double = 0.51
+val parts : Int = 2
 val strokeFactor : Int = 90
 val sizeFactor : Float = 2.9f
 val foreColor : Int = Color.parseColor("#0D47A1")
 val backColor : Int = Color.parseColor("#BDBDBD")
 val offsetFactor : Float = 0.25f
 val rotDeg : Float = 90f
+val delay : Long = 20
 
 fun Int.inverse() : Float = 1f / this
 fun Float.scaleFactor() : Float = Math.floor(this / scDiv).toFloat()
@@ -34,8 +36,8 @@ fun Float.mirrorValue(a : Int, b : Int) : Float {
 fun Float.updateValue(dir : Float, a : Int, b : Int) : Float = mirrorValue(a, b) * dir * scGap
 
 fun Canvas.drawDistortedLine(offset : Float, rSize : Float, sc : Float, paint : Paint) {
-    drawLine(0f, -rSize, 0f, -offset / 2, paint)
-    drawLine(0f, -offset / 2, offset * sc, 0f, paint)
+    drawLine(0f, -rSize , 0f, -offset, paint)
+    drawLine(0f, -offset, offset * sc, 0f, paint)
 }
 
 fun Canvas.drawMidDistortLine(i : Int, size : Float, sc : Float, paint : Paint) {
@@ -44,7 +46,7 @@ fun Canvas.drawMidDistortLine(i : Int, size : Float, sc : Float, paint : Paint) 
     save()
     rotate(90f * i)
     translate(rSize, 0f)
-    for (j in 0..(lines - 1)) {
+    for (j in 0..(parts - 1)) {
         save()
         scale(1f, 1f - 2 * j)
         drawDistortedLine(offset, rSize, sc.divideScale(i, lines), paint)
@@ -121,7 +123,7 @@ class SquareMidDistortedView(ctx : Context) : View(ctx) {
             if (animated) {
                 cb()
                 try {
-                    Thread.sleep(50)
+                    Thread.sleep(delay)
                     view.invalidate()
                 } catch(ex : Exception) {
 
@@ -218,6 +220,7 @@ class SquareMidDistortedView(ctx : Context) : View(ctx) {
 
         fun render(canvas : Canvas, paint : Paint) {
             canvas.drawColor(backColor)
+            smd.draw(canvas, paint)
             animator.animate {
                 smd.update {i, scl ->
                     animator.stop()
