@@ -184,4 +184,28 @@ class SquareMidDistortedView(ctx : Context) : View(ctx) {
             return this
         }
     }
+
+    data class SquareMidDistort(var i : Int) {
+
+        private val root : SMDNode = SMDNode(0)
+        private var curr : SMDNode = root
+        private var dir : Int = 1
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            root.draw(canvas, paint)
+        }
+
+        fun update(cb : (Int, Float) -> Unit) {
+            curr.update {i, scl ->
+                curr = curr.getNext(dir) {
+                    dir *= -1
+                }
+                cb(i, scl)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            curr.startUpdating(cb)
+        }
+    }
 }
