@@ -75,3 +75,21 @@ fun Canvas.drawSMDNode(i : Int, scale : Float, paint : Paint) {
     drawSquareMidDistorted(size, sc1, paint)
     restore()
 }
+
+class SquareMidDistortedView(ctx : Context) : View(ctx) {
+
+    private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    override fun onDraw(canvas : Canvas) {
+
+    }
+
+    override fun onTouchEvent(event : MotionEvent) : Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+
+            }
+        }
+        return true
+    }
+}
