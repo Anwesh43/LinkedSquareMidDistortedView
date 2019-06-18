@@ -229,4 +229,13 @@ class SquareMidDistortedView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : SquareMidDistortedView {
+            val view : SquareMidDistortedView = SquareMidDistortedView(activity)
+            activity.setContentView(view)
+            return view 
+        }
+    }
 }
